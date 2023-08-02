@@ -34,9 +34,7 @@ def poincare_index_at(i, j, angles, tolerance):
         return "loop"
     if -180 - tolerance <= index <= -180 + tolerance:
         return "delta"
-    if 360 - tolerance <= index <= 360 + tolerance:
-        return "whorl"
-    return "none"
+    return "whorl" if 360 - tolerance <= index <= 360 + tolerance else "none"
 
 
 def calculate_singularities(im, angles, tolerance, W, mask):
@@ -44,13 +42,13 @@ def calculate_singularities(im, angles, tolerance, W, mask):
 
     # DELTA: RED, LOOP:ORAGNE, whorl:INK
     colors = {"loop" : (0, 0, 255), "delta" : (0, 128, 255), "whorl": (255, 153, 255)}
-    
+
     list_singularity = {
         "loop" : [],
         "delta": [],
         "whorl": [],
     }
-    
+
     for i in range(3, len(angles) - 2):             # Y
         for j in range(3, len(angles[i]) - 2):      # x
             # mask any singularity outside of the mask
@@ -75,7 +73,7 @@ def calculate_singularities(im, angles, tolerance, W, mask):
     if len(list_singularity["whorl"])!=0:
         x_core = list_singularity["whorl"][0]
     #----------
-    
+
     list_singularity["delta"] = np.array(list_singularity["delta"])
     if len(list_singularity["delta"]) != 0:
         if x_core != None:
@@ -87,7 +85,7 @@ def calculate_singularities(im, angles, tolerance, W, mask):
                 if delta[0] > x_core:
                     delta_right.append(delta)
             list_delta = []
-            if len(delta_left)!=0:
+            if delta_left:
                 delta_left = np.array(delta_left).mean(axis=0)
                 list_delta.append(delta_left.tolist())
             if len(delta_left)!=0:

@@ -70,7 +70,7 @@ def thinning_morph(image, kernel):
 
     # shift down and compare one pixel offset
     down = np.zeros_like(thining_image)
-    down[1:-1, :] = thining_image[0:-2, ]
+    down[1:-1, :] = thining_image[:-2]
     down_mask = np.subtract(down, thining_image)
     down_mask[0:-2, :] = down_mask[1:-1, ]
     cv.imshow('down', down_mask)

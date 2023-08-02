@@ -64,7 +64,7 @@ def gabor_filter(im, orient, freq, kx=0.65, ky=0.65):
                 orientindex[i][j] = orientindex[i][j] - maxorientindex
 
     # Find indices of matrix points greater than maxsze from the image boundary
-    block_size = int(block_size)
+    block_size = block_size
     valid_row, valid_col = np.where(freq>0)
     finalind = \
         np.where((valid_row>block_size) & (valid_row<rows - block_size) & (valid_col>block_size) & (valid_col<cols - block_size))
@@ -74,6 +74,4 @@ def gabor_filter(im, orient, freq, kx=0.65, ky=0.65):
         img_block = im[r-block_size:r+block_size + 1][:,c-block_size:c+block_size + 1]
         return_img[r][c] = np.sum(img_block * gabor_filter[int(orientindex[r//16][c//16]) - 1])
 
-    gabor_img = 255 - np.array((return_img < 0)*255).astype(np.uint8)
-
-    return gabor_img
+    return 255 - np.array((return_img < 0)*255).astype(np.uint8)

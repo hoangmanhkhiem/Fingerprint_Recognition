@@ -26,29 +26,29 @@ def score_matching(finger, finger_d, threshold_d, threshold_o):
         else:
             x_core_d = finger_d['whorl'][0]
             y_core_d = finger_d['whorl'][1]
-        
+
         if (len(finger['loop'])) != 0:
             x_core = finger['loop'][0]
             y_core = finger['loop'][1]
         else:
             x_core = finger['whorl'][0]
             y_core = finger['whorl'][1]
-        
-    
+
+
     n_d = len(finger_d['loop'])/3 + len(finger_d['whorl'])/3 + len(finger_d['delta']) + len(finger_d['ending']) + len(finger_d['bifurcation'])
     n = 0
-    
+
     if len(finger['loop']) != 0 and len(finger_d['loop'])!=0:
         sd_loop = math.sqrt(((finger['loop'][0]-x_core) - (finger_d['loop'][0]-x_core_d))**2 + ((finger['loop'][1]-y_core) - (finger_d['loop'][1]-y_core_d))**2)
         dd_loop = abs(finger['loop'][2] - finger_d['loop'][2])
         if sd_loop < threshold_d and dd_loop < threshold_o:
-            n=n+5
-            
+            n += 5
+
     if len(finger['whorl']) != 0 and len(finger_d['whorl'])!=0:
         sd_whorl = math.sqrt(((finger['whorl'][0]-x_core) - (finger_d['whorl'][0]-x_core_d))**2 + ((finger['whorl'][1]-y_core) - (finger_d['whorl'][1])-y_core_d)**2)
         dd_whorl = abs(finger['whorl'][2] - finger_d['whorl'][2])
         if sd_whorl < threshold_d and dd_whorl < threshold_o:
-            n=n+5
+            n += 5
 
     if len(finger['delta']) != 0 and len(finger_d['delta'])!=0:
         for delta in finger['delta']:
@@ -57,7 +57,7 @@ def score_matching(finger, finger_d, threshold_d, threshold_o):
                 dd_delta = abs(delta[2] - delta_d[2])
                 if sd_delta < threshold_d and dd_delta < threshold_o:
                     n=n+5
-                    
+
     ending_d = finger_d['ending']
     for end_d in ending_d:
         for end in finger['ending']:
@@ -66,7 +66,7 @@ def score_matching(finger, finger_d, threshold_d, threshold_o):
             if sd_end < threshold_d and dd_end < threshold_o:
                 n=n+1
                 end_d = [0,0,0]##can phai sua lai
-    
+
     bifurcation_d = finger_d['bifurcation']
     for bif_d in bifurcation_d:
         for bif in finger['bifurcation']:
@@ -75,7 +75,7 @@ def score_matching(finger, finger_d, threshold_d, threshold_o):
             if sd_bif < threshold_d and dd_bif < threshold_o:
                 n=n+1
                 bif_d = [0,0,0]## can phai sua lai
-    
+
     return n/n_d
     
 def matching_finger(finger, database, threshold_d, threshold_o):

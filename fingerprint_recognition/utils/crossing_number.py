@@ -31,10 +31,9 @@ def minutiae_at(pixels, i, j, kernel_size):
 
         values = [pixels[i + l][j + k] for k, l in cells]
 
-        # count crossing how many times it goes from 0 to 1
-        crossings = 0
-        for k in range(0, len(values)-1):
-            crossings += abs(values[k] - values[k + 1])
+        crossings = sum(
+            abs(values[k] - values[k + 1]) for k in range(0, len(values) - 1)
+        )
         crossings //= 2
 
         # if pixel on boundary are crossed with the ridge once, then it is a possible ridge ending
