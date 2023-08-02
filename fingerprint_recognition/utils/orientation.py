@@ -21,7 +21,7 @@ def calculate_angles(im, W, smoth=False):
     ySobel = np.array(sobelOperator).astype(np.int)
     xSobel = np.transpose(ySobel).astype(np.int)
 
-    result = [[] for i in range(1, y, W)]
+    result = [[] for _ in range(1, y, W)]
 
     Gx_ = cv.filter2D(im/125,-1, ySobel)*125
     Gy_ = cv.filter2D(im/125,-1, xSobel)*125
@@ -64,7 +64,7 @@ def gauss(x, y):
 
 
 def kernel_from_function(size, f):
-    kernel = [[] for i in range(0, size)]
+    kernel = [[] for _ in range(0, size)]
     for i in range(0, size):
         for j in range(0, size):
             kernel[i].append(f(i - size / 2, j - size / 2))
@@ -90,13 +90,11 @@ def smooth_angles(angles):
 
     cos_angles = cv.filter2D(cos_angles/125,-1, kernel)*125
     sin_angles = cv.filter2D(sin_angles/125,-1, kernel)*125
-    smooth_angles = np.arctan2(sin_angles, cos_angles)/2
-
-    return smooth_angles
+    return np.arctan2(sin_angles, cos_angles)/2
 
 
 def get_line_ends(i, j, W, tang):
-    if -1 <= tang and tang <= 1:
+    if -1 <= tang <= 1:
         begin = (i, int((-W/2) * tang + j + W/2))
         end = (i + W, int((W/2) * tang + j + W/2))
     else:
